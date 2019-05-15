@@ -9,20 +9,24 @@ namespace AutoMapperOnMVC.App_Start
             AutoMapper.Mapper.Initialize(sourceToDestination =>
             {
                 sourceToDestination.CreateMap<Student, Teacher>()
-                    .ForMember(destinationMember => destinationMember.DepartmentName,
-                        opt => opt.MapFrom(src => src.Department.Title.Trim() == "CSE" ? "Computer Engineer" : src.Department.Title))
-                    .ForMember(destinationMember => destinationMember.FName,
-                        opt => opt.MapFrom(src => src.FirstName))
-                    .ForMember(destinationMember => destinationMember.LName,
-                        opt => opt.MapFrom(src => src.LastName));
+                    .ForMember(destinationTeacherMember => destinationTeacherMember.DepartmentName,
+                        sourceStudentMember => sourceStudentMember.MapFrom(src => src.Department.Title.Trim() == "CSE" ? "Computer Engineer" : src.Department.Title))
+
+                        .ForMember(destinationTeacherMember => destinationTeacherMember.FName,
+                        sourceStudentMember => sourceStudentMember.MapFrom(src => src.FirstName))
+
+                        .ForMember(destinationTeacherMember => destinationTeacherMember.LName,
+                        sourceStudentMember => sourceStudentMember.MapFrom(src => src.LastName));
 
                 sourceToDestination.CreateMap<Teacher, Student>()
-                    .ForMember(destinationMember => destinationMember.DepartmentName,
-                        opt => opt.MapFrom(src => src.Department.Title.Trim() == "CSE" ? src.Department.Title : "Not accepted"))
-                    .ForMember(destinationMember => destinationMember.FirstName,
-                        opt => opt.MapFrom(src => src.FName))
-                    .ForMember(destinationMember => destinationMember.LastName,
-                        opt => opt.MapFrom(src => src.LName));
+                    .ForMember(destinationStudentMember => destinationStudentMember.DepartmentName,
+                        sourceTeacherMember => sourceTeacherMember.MapFrom(src => src.Department.Title.Trim() == "CSE" ? src.Department.Title : "Not accepted"))
+                    
+                    .ForMember(destinationStudentMember => destinationStudentMember.FirstName,
+                        sourceTeacherMember => sourceTeacherMember.MapFrom(src => src.FName))
+                   
+                    .ForMember(destinationStudentMember => destinationStudentMember.LastName,
+                        sourceTeacherMember => sourceTeacherMember.MapFrom(src => src.LName));
             });
         }
     }
